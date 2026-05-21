@@ -1,9 +1,0 @@
-package dev.marcobf.h2openmanager
-
-class Greeting {
-    private val platform = getPlatform()
-
-    fun greet(): String {
-        return sayHello(platform.name)
-    }
-}
