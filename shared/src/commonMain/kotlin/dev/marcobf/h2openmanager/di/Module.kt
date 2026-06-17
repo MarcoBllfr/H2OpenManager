@@ -5,6 +5,7 @@ import dev.marcobf.h2openmanager.data.local.AppDatabase
 import dev.marcobf.h2openmanager.data.local.getAppDatabase
 import dev.marcobf.h2openmanager.data.repository.AquariumRepositoryImpl
 import dev.marcobf.h2openmanager.domain.repository.AquariumRepository
+import dev.marcobf.h2openmanager.presentation.aquarium.AquariumListViewModel
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
@@ -30,4 +31,6 @@ val sharedModule = module {
     single {
         getAppDatabase(get<RoomDatabase.Builder<AppDatabase>>())
     }
+
+    factory { AquariumListViewModel(get()) }
 }
