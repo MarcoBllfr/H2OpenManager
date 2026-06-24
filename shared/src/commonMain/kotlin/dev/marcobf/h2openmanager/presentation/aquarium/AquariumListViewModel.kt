@@ -22,8 +22,8 @@ class AquariumListViewModel (
         viewModelScope.launch{
             aquariumRepository.getAllAquariums()
                 .onStart { _uiState.update { it.copy(isLoading = true) } }
-                .catch { _uiState.update { it.copy(isLoading = false) }}
-                .collect { aquariums -> _uiState.update { it.copy(aquariums = aquariums, isLoading = false) } }
+                .catch { e -> _uiState.update { it.copy(isLoading = false, error = e.message) } }
+                .collect { aquariums -> _uiState.update { it.copy(aquariums = aquariums, isLoading = false) }}
         }
     }
 }

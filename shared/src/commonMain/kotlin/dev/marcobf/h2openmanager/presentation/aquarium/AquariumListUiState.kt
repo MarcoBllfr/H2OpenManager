@@ -4,5 +4,6 @@ import dev.marcobf.h2openmanager.domain.model.Aquarium
 
 data class AquariumListUiState(
     val aquariums: List<Aquarium> = emptyList(),
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val error: String? = null
 )
