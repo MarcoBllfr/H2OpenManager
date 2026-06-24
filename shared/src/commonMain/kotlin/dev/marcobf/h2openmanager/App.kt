@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dev.marcobf.h2openmanager.presentation.aquarium.AquariumListScreen
 import org.jetbrains.compose.resources.painterResource
 
 import h2openmanager.shared.generated.resources.Res
@@ -23,6 +24,6 @@ import h2openmanager.shared.generated.resources.compose_multiplatform
 @Preview
 fun App() {
     MaterialTheme {
-
+        AquariumListScreen()
         }
     }
