@@ -49,7 +49,6 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
-
             implementation(libs.room.runtime)
 
             implementation(libs.koin.core)
@@ -57,6 +56,9 @@ kotlin {
 
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.datetime)
+
+
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

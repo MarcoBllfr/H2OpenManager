@@ -13,12 +13,13 @@ import org.koin.compose.koinInject
 
 @Composable
 fun AquariumListScreen(
+ onAddClick: () -> Unit = {},
  viewModel: AquariumListViewModel = koinInject()
 ) {
  val state by viewModel.uiState.collectAsState()
  Scaffold(
   floatingActionButton = {
-   FloatingActionButton(onClick = { viewModel.insertTestAquarium() }) {
+   FloatingActionButton(onClick = onAddClick) {
     Text("+", style = MaterialTheme.typography.headlineMedium)
    }
   }

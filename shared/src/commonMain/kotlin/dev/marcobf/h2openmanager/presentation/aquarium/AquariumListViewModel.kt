@@ -44,4 +44,8 @@ class AquariumListViewModel (
         )
         }
     }
+
+    fun insertAquarium(aquarium: Aquarium){
+        viewModelScope.launch { aquariumRepository.insertAquarium(aquarium) }
+    }
 }
