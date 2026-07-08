@@ -22,4 +22,13 @@ interface AquariumDao {
 
     @Delete
     suspend fun deleteAquarium(aquarium: AquariumEntity)
+
+    @Query("UPDATE aquariums SET isFavorite = 0")
+    suspend fun clearFavorite()
+
+    @Query("UPDATE aquariums SET isFavorite = 1 WHERE id = :id")
+    suspend fun setFavorite(id: Long)
+
+    @Query("SELECT * FROM aquariums WHERE isFavorite = 1 LIMIT 1")
+    suspend fun getFavorite(): AquariumEntity?
 }

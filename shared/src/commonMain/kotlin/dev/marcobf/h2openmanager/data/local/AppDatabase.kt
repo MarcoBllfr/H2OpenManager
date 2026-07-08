@@ -7,8 +7,8 @@ import dev.marcobf.h2openmanager.data.local.entity.AquariumEntity
 
 @Database(
     entities = [AquariumEntity::class],
-    version = 1,
-    exportSchema = false
+    version = 2,
+
 )
 abstract class AppDatabase : RoomDatabase(){
     abstract fun aquariumDao(): AquariumDao

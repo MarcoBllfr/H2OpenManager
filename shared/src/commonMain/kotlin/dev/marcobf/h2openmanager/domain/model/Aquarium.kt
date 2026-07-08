@@ -9,6 +9,6 @@ data class Aquarium(
     val name: String,
     val type: WaterType,
     val liters: Double,
+    val isFavorite: Boolean = false,
     val createdAt: Long = 0,
-
 )

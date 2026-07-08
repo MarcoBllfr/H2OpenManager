@@ -9,6 +9,7 @@ fun AquariumEntity.toDomain(): Aquarium = Aquarium(
     name = name,
     type = WaterType.valueOf(type.name),
     liters = liters,
+    isFavorite = isFavorite,
     createdAt = createdAt
 )
 
@@ -17,5 +18,6 @@ fun Aquarium.toEntity(): AquariumEntity = AquariumEntity(
     name = name,
     type = type,
     liters = liters,
+    isFavorite = isFavorite,
     createdAt = createdAt
 )

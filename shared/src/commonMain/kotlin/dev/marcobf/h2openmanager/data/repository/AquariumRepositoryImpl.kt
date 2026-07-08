@@ -30,4 +30,13 @@ class AquariumRepositoryImpl(
     override suspend fun deleteAquarium(aquarium: Aquarium) {
         aquariumDao.deleteAquarium(aquarium.toEntity())
     }
+
+    override suspend fun setFavorite(id: Long) {
+        aquariumDao.clearFavorite()
+        aquariumDao.setFavorite(id)
+    }
+
+    override suspend fun getFavoriteAquarium(): Aquarium? {
+        return aquariumDao.getFavorite()?.toDomain()
+    }
 }

@@ -10,4 +10,6 @@ interface AquariumRepository {
     suspend fun insertAquarium(aquarium: Aquarium): Long
     suspend fun updateAquarium(aquarium: Aquarium)
     suspend fun deleteAquarium(aquarium: Aquarium)
+    suspend fun setFavorite(id: Long)
+    suspend fun getFavoriteAquarium(): Aquarium?
 }
