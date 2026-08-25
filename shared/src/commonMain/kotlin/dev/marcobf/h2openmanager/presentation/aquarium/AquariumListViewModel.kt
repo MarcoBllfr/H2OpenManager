@@ -37,4 +37,9 @@ class AquariumListViewModel (
     fun setFavorite(id: Long) {
         viewModelScope.launch { aquariumRepository.setFavorite(id) }
     }
+
+    fun updateAquarium(aquarium: Aquarium) {
+        viewModelScope.launch { aquariumRepository.updateAquarium(aquarium) }
+    }
+
 }

@@ -17,11 +17,12 @@ import androidx.compose.foundation.verticalScroll
 @Composable
 fun AquariumFormScreen(
     viewModel: AquariumListViewModel = koinInject(),
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    aquarium: Aquarium?
 ) {
-    var name by remember { mutableStateOf("") }
-    var liters by remember { mutableStateOf("") }
-    var waterType by remember { mutableStateOf(WaterType.FRESHWATER) }
+    var name by remember { mutableStateOf(aquarium?.name ?: "")  }
+    var liters by remember { mutableStateOf(aquarium?.liters?.toString() ?: "") }
+    var waterType by remember { mutableStateOf(aquarium?.type ?: WaterType.FRESHWATER) }
 
     Column(
         modifier = Modifier
@@ -86,9 +87,17 @@ fun AquariumFormScreen(
                 onClick = {
                     val litersValue = liters.toDoubleOrNull()
                     if (name.isNotBlank() && litersValue != null) {
-                        viewModel.insertAquarium(
-                            Aquarium(name = name, liters = litersValue, type = waterType)
-                        )
+                        if (aquarium != null) {
+                            viewModel.updateAquarium(aquarium.copy(
+                                name = name,
+                                liters = litersValue,
+                                type = waterType
+                            ))
+                        } else {
+                            viewModel.insertAquarium(
+                                Aquarium(name = name, liters = litersValue, type = waterType)
+                            )
+                        }
                         onBack()
                     }
                 },
@@ -96,6 +105,7 @@ fun AquariumFormScreen(
             ) {
                 Text("Salva")
             }
+
         }
     }
 }

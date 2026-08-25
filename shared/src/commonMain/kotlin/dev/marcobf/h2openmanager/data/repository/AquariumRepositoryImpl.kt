@@ -39,4 +39,5 @@ class AquariumRepositoryImpl(
     override suspend fun getFavoriteAquarium(): Aquarium? {
         return aquariumDao.getFavorite()?.toDomain()
     }
+
 }

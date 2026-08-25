@@ -15,7 +15,9 @@ import org.koin.compose.koinInject
 @Composable
 fun AquariumListScreen(
  onAddClick: () -> Unit = {},
+ onAquariumClick: (Long) -> Unit = {},
  viewModel: AquariumListViewModel = koinInject()
+
 ) {
  val state by viewModel.uiState.collectAsState()
  Scaffold(
@@ -61,6 +63,7 @@ fun AquariumListScreen(
      items(state.aquariums, key = { it.id }) { aquarium ->
       Card(
        modifier = Modifier.fillMaxWidth()
+        .clickable{onAquariumClick(aquarium.id)}
       ) {
         Row(
          modifier = Modifier

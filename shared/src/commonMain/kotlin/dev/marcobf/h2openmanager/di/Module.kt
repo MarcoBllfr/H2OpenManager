@@ -32,5 +32,5 @@ val sharedModule = module {
         getAppDatabase(get<RoomDatabase.Builder<AppDatabase>>())
     }
 
-    factory { AquariumListViewModel(get()) }
+    single { AquariumListViewModel(get()) }
 }
