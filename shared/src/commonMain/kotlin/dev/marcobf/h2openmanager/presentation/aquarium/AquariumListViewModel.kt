@@ -31,7 +31,12 @@ class AquariumListViewModel (
     }
 
     fun insertAquarium(aquarium: Aquarium){
-        viewModelScope.launch { aquariumRepository.insertAquarium(aquarium) }
+        viewModelScope.launch {
+            val isFirst = _uiState.value.aquariums.isEmpty()
+            aquariumRepository.insertAquarium(
+                if (isFirst) aquarium.copy(isFavorite = true) else aquarium
+            )
+        }
     }
 
     fun setFavorite(id: Long) {

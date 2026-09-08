@@ -45,7 +45,12 @@ fun AppNavigation() {
     ) { padding ->
         Box(modifier = Modifier.padding(padding)) {
             when (selectedTab) {
-                Tab.HOME -> HomeScreen()
+                Tab.HOME -> HomeScreen(
+                    onCreateClick = {
+                        selectedTab = Tab.LIST
+                        showForm = true
+                    }
+                )
                 Tab.LIST -> {
                     when {
                         editingAquarium != null -> AquariumFormScreen(

@@ -44,6 +44,17 @@ fun DetailScreen(
                     TextButton(onClick = { onEdit(aquarium) }) {
                         Text("Modifica")
                     }
+                    TextButton(
+                        onClick = {
+                            viewModel.deleteAquarium(aquarium)
+                            onBack()
+                        },
+                        colors = ButtonDefaults.textButtonColors(
+                            contentColor = MaterialTheme.colorScheme.error
+                        )
+                    ) {
+                        Text("Elimina")
+                    }
                 }
                 Spacer(Modifier.height(16.dp))
 
