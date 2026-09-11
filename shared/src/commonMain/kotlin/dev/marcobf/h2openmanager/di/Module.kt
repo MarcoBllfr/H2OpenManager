@@ -4,7 +4,9 @@ import androidx.room.RoomDatabase
 import dev.marcobf.h2openmanager.data.local.AppDatabase
 import dev.marcobf.h2openmanager.data.local.getAppDatabase
 import dev.marcobf.h2openmanager.data.repository.AquariumRepositoryImpl
+import dev.marcobf.h2openmanager.data.repository.MaintenanceRepositoryImpl
 import dev.marcobf.h2openmanager.domain.repository.AquariumRepository
+import dev.marcobf.h2openmanager.domain.repository.MaintenanceRepository
 import dev.marcobf.h2openmanager.presentation.aquarium.AquariumListViewModel
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -27,6 +29,10 @@ expect val platformModule: Module
 val sharedModule = module {
     singleOf(::AquariumRepositoryImpl).bind<AquariumRepository>()
     single{get<AppDatabase>().aquariumDao()}
+
+    singleOf(::MaintenanceRepositoryImpl).bind<MaintenanceRepository>()
+    single { get<AppDatabase>().maintenanceDao() }
+
 
     single {
         getAppDatabase(get<RoomDatabase.Builder<AppDatabase>>())
