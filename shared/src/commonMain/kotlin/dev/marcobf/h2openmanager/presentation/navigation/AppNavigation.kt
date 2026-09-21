@@ -10,6 +10,7 @@ import dev.marcobf.h2openmanager.presentation.aquarium.AquariumListScreen
 import dev.marcobf.h2openmanager.presentation.detail.DetailScreen
 import dev.marcobf.h2openmanager.presentation.device.DeviceScreen
 import dev.marcobf.h2openmanager.presentation.home.HomeScreen
+import dev.marcobf.h2openmanager.presentation.maintenance.MaintenanceFormScreen
 import dev.marcobf.h2openmanager.presentation.settings.SettingsScreen
 import dev.marcobf.h2openmanager.domain.model.Aquarium
 
@@ -27,6 +28,7 @@ fun AppNavigation() {
     var showForm by remember { mutableStateOf(false) }
     var selectedAquariumId by remember { mutableStateOf<Long?>(null) }
     var editingAquarium by remember { mutableStateOf<Aquarium?>(null) }
+    var showTaskForm by remember { mutableStateOf(false) }
 
 
     Scaffold(
@@ -53,6 +55,11 @@ fun AppNavigation() {
                 )
                 Tab.LIST -> {
                     when {
+                        showTaskForm -> MaintenanceFormScreen(
+                            aquariumId = selectedAquariumId!!,
+                            onBack = { showTaskForm = false },
+                            onSaved = { showTaskForm = false }
+                        )
                         editingAquarium != null -> AquariumFormScreen(
                             onBack = { editingAquarium = null },
                             aquarium = editingAquarium
@@ -60,7 +67,8 @@ fun AppNavigation() {
                         selectedAquariumId != null -> DetailScreen(
                             aquariumId = selectedAquariumId!!,
                             onBack = { selectedAquariumId = null },
-                            onEdit = { editingAquarium = it }
+                            onEdit = { editingAquarium = it },
+                            onAddTask = { showTaskForm = true }
                         )
                         showForm -> AquariumFormScreen(onBack = { showForm = false }, aquarium = null)
                         else -> AquariumListScreen(
