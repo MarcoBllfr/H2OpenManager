@@ -1,12 +1,14 @@
 package dev.marcobf.h2openmanager.presentation.maintenance
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,7 +25,8 @@ import dev.marcobf.h2openmanager.presentation.utils.formatEpochDays
 @Composable
 fun TaskRow(
     task: MaintenanceTask,
-    onClick: () -> Unit,
+    onToggle: () -> Unit,
+    onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
     val isDone = task.isCompleted
@@ -33,7 +36,12 @@ fun TaskRow(
     val overdueColor = MaterialTheme.colorScheme.error
 
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .combinedClickable(
+                onClick = { onToggle() },
+                onLongClick = { onEdit() }
+            ),
         shape = MaterialTheme.shapes.medium,
         tonalElevation = 2.dp
     ) {
@@ -41,11 +49,13 @@ fun TaskRow(
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable { onClick() }
-            ) {
+            Checkbox(
+                checked = isDone,
+                onCheckedChange = { onToggle() },
+                modifier = Modifier.padding(end = 8.dp)
+            )
+
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = task.type.label,
                     style = MaterialTheme.typography.titleSmall,
@@ -80,7 +90,7 @@ fun TaskRow(
             }
             TextButton(
                 onClick = onDelete,
-                colors = androidx.compose.material3.ButtonDefaults.textButtonColors(
+                colors = ButtonDefaults.textButtonColors(
                     contentColor = MaterialTheme.colorScheme.error
                 )
             ) {

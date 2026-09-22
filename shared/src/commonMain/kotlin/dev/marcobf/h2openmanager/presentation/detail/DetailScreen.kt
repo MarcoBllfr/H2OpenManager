@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.marcobf.h2openmanager.domain.model.Aquarium
+import dev.marcobf.h2openmanager.domain.model.MaintenanceTask
 import dev.marcobf.h2openmanager.domain.model.WaterType
 import dev.marcobf.h2openmanager.presentation.aquarium.AquariumListViewModel
 import dev.marcobf.h2openmanager.presentation.maintenance.MaintenanceViewModel
@@ -25,7 +26,8 @@ fun DetailScreen(
     maintenanceViewModel: MaintenanceViewModel = koinInject(),
     onBack: () -> Unit = {},
     onEdit: (Aquarium) -> Unit = {},
-    onAddTask:(aquariumId: Long) -> Unit= {}
+    onAddTask:(aquariumId: Long) -> Unit= {},
+    onEditTask: (MaintenanceTask) -> Unit = {}
 ){
     val state by viewModel.uiState.collectAsState()
     val aquarium = state.aquariums.find { it.id == aquariumId }
@@ -119,7 +121,8 @@ fun DetailScreen(
                             ) { task ->
                                 TaskRow(
                                     task = task,
-                                    onClick = { maintenanceViewModel.toggleCompleted(task) },
+                                    onToggle = { maintenanceViewModel.toggleCompleted(task) },
+                                    onEdit = { onEditTask(task) },
                                     onDelete = { maintenanceViewModel.deleteTask(task) }
                                 )
                             }
