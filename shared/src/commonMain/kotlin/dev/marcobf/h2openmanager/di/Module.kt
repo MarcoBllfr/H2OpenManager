@@ -9,6 +9,7 @@ import dev.marcobf.h2openmanager.domain.repository.AquariumRepository
 import dev.marcobf.h2openmanager.domain.repository.MaintenanceRepository
 import dev.marcobf.h2openmanager.presentation.aquarium.AquariumListViewModel
 import dev.marcobf.h2openmanager.presentation.maintenance.MaintenanceViewModel
+import dev.marcobf.h2openmanager.domain.notification.NotificationScheduler
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
@@ -38,6 +39,7 @@ val sharedModule = module {
     single {
         getAppDatabase(get<RoomDatabase.Builder<AppDatabase>>())
     }
+
 
     single { AquariumListViewModel(get()) }
     single { MaintenanceViewModel(get()) }

@@ -46,7 +46,9 @@ class MaintenanceViewModel(
     fun toggleCompleted(task: MaintenanceTask) {
         viewModelScope.launch {
             val next =
-                if (task.intervalDays != null) {
+                if (task.isCompleted) {
+                    task.copy(isCompleted = false)
+                } else if (task.intervalDays != null) {
                     val newDate = addDays(todayEpochDays(), task.intervalDays)
                     task.copy(isCompleted = true, dueDate = newDate)
                 } else {
