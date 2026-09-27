@@ -27,4 +27,8 @@ class MaintenanceRepositoryImpl(
     override suspend fun deleteTask(task: MaintenanceTask) {
         return maintenanceDao.deleteTask(task.toEntity())
     }
+
+    override suspend fun resetExpiredCompletedTasks(today: Long) {
+        maintenanceDao.resetExpiredCompletedTasks(today)
+    }
 }

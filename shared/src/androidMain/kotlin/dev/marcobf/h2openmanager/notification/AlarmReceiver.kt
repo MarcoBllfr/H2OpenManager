@@ -1,13 +1,18 @@
 package dev.marcobf.h2openmanager.notification
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        ensureChannel(context)
+
         val taskId = intent.getLongExtra(Extra.TASK_ID, -1L)
         val aquariumName = intent.getStringExtra(Extra.AQUARIUM_NAME) ?: ""
         val taskLabel = intent.getStringExtra(Extra.TASK_LABEL) ?: ""
@@ -23,5 +28,18 @@ class AlarmReceiver : BroadcastReceiver() {
             .build()
 
         NotificationManagerCompat.from(context).notify(taskId.toInt(), notification)
+    }
+
+    private fun ensureChannel(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val manager = context.getSystemService(NotificationManager::class.java)
+            manager.createNotificationChannel(
+                NotificationChannel(
+                    Extra.CHANNEL_ID,
+                    "Manutenzione",
+                    NotificationManager.IMPORTANCE_HIGH
+                )
+            )
+        }
     }
 }

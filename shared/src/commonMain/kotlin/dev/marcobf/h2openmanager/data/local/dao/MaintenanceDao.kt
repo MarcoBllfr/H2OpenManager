@@ -18,4 +18,7 @@ interface MaintenanceDao {
     suspend fun updateTask(task: MaintenanceEntity)
     @Delete
     suspend fun deleteTask(task: MaintenanceEntity)
+
+    @Query("UPDATE maintenance_tasks SET isCompleted = 0 WHERE isCompleted = 1 AND (dueDate <= :today) AND intervalDays IS NOT NULL")
+    suspend fun resetExpiredCompletedTasks(today: Long)
 }

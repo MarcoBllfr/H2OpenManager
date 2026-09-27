@@ -42,6 +42,6 @@ val sharedModule = module {
 
 
     single { AquariumListViewModel(get()) }
-    single { MaintenanceViewModel(get()) }
+    single { MaintenanceViewModel(get(), get(), get()) }
 
 }

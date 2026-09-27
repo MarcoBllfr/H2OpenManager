@@ -9,4 +9,5 @@ interface MaintenanceRepository {
     suspend fun insertTask(task: MaintenanceTask): Long
     suspend fun updateTask(task: MaintenanceTask)
     suspend fun deleteTask(task: MaintenanceTask)
+    suspend fun resetExpiredCompletedTasks(today: Long)
 }

@@ -3,6 +3,8 @@ package dev.marcobf.h2openmanager.presentation.maintenance
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.marcobf.h2openmanager.domain.model.MaintenanceTask
+import dev.marcobf.h2openmanager.domain.notification.NotificationScheduler
+import dev.marcobf.h2openmanager.domain.repository.AquariumRepository
 import dev.marcobf.h2openmanager.domain.repository.MaintenanceRepository
 import dev.marcobf.h2openmanager.domain.utils.addDays
 import dev.marcobf.h2openmanager.domain.utils.todayEpochDays
@@ -15,7 +17,9 @@ import kotlinx.coroutines.launch
 
 
 class MaintenanceViewModel(
-    private val maintenanceRepository: MaintenanceRepository
+    private val maintenanceRepository: MaintenanceRepository,
+    private val aquariumRepository: AquariumRepository,
+    private val notificationScheduler: NotificationScheduler
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(MaintenanceUiState())
     val uiState : StateFlow<MaintenanceUiState> = _uiState.asStateFlow()
@@ -24,6 +28,7 @@ class MaintenanceViewModel(
 
     fun loadTasks(aquariumId: Long){
         viewModelScope.launch {
+            maintenanceRepository.resetExpiredCompletedTasks(todayEpochDays())
             _uiState.update { it.copy(isLoading = true) }
                 maintenanceRepository.getTasksByAquarium(aquariumId)
                     .catch { e -> _uiState.update { it.copy(isLoading = false, error = e.message) } }
@@ -32,15 +37,24 @@ class MaintenanceViewModel(
             }
         }
     fun insertTask(task: MaintenanceTask) {
-        viewModelScope.launch { maintenanceRepository.insertTask(task) }
+        viewModelScope.launch {
+            val id = maintenanceRepository.insertTask(task)
+            scheduleReminder(task.copy(id = id))
+        }
     }
 
     fun updateTask(task: MaintenanceTask) {
-        viewModelScope.launch { maintenanceRepository.updateTask(task) }
+        viewModelScope.launch {
+            maintenanceRepository.updateTask(task)
+            scheduleReminder(task)
+        }
     }
 
     fun deleteTask(task: MaintenanceTask) {
-        viewModelScope.launch { maintenanceRepository.deleteTask(task) }
+        viewModelScope.launch {
+            maintenanceRepository.deleteTask(task)
+            notificationScheduler.cancelTaskReminder(task.id)
+        }
     }
 
     fun toggleCompleted(task: MaintenanceTask) {
@@ -55,7 +69,21 @@ class MaintenanceViewModel(
                     task.copy(isCompleted = true)
                 }
             maintenanceRepository.updateTask(next)
+            scheduleReminder(next)
         }
+    }
+
+    private suspend fun scheduleReminder(task: MaintenanceTask) {
+        notificationScheduler.cancelTaskReminder(task.id)
+        if (task.dueDate < todayEpochDays()) return
+        val name = aquariumRepository.getAquariumById(task.aquariumId)?.name ?: ""
+        notificationScheduler.scheduleTaskReminder(
+            taskId = task.id,
+            aquariumName = name,
+            taskLabel = task.type.label,
+            dueDate = task.dueDate,
+            notifyBeforeDays = task.notifiedBeforeDays
+        )
     }
 
 
